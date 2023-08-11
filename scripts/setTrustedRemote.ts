@@ -1,27 +1,29 @@
 import { ethers, network } from "hardhat";
 import addressUtils from "../utils/addressUtils";
-import { LzSuperCall__factory } from "../typechain-types";
+import { LzApp__factory, LzSuperCall__factory } from "../typechain-types";
 
 const chainIds = require("../constants/chainIds.json");
 
 async function main() {
   const [signer] = await ethers.getSigners();
 
-  const srcChain = "fuji";
-  const destChain = "bsc-testnet";
+  // Input 1
+  const srcChain = "bsc-testnet";
+  const destChain = "fuji";
 
   const srcAddrList = await addressUtils.getAddressList(srcChain);
   const destAddrList = await addressUtils.getAddressList(destChain);
 
-  const lzSuperCall = LzSuperCall__factory.connect(
-    srcAddrList["LzSuperCall"],
-    signer
-  );
+  // Input 2
+  const sourceAddr = srcAddrList["LzSimpleApp"];
+  const destAddr = destAddrList["LzSimpleApp"];
+
+  const lzSuperCall = LzApp__factory.connect(sourceAddr, signer);
 
   const remoteChainId = chainIds[destChain];
   const remoteAndLocal = ethers.solidityPacked(
     ["address", "address"],
-    [destAddrList["LzSuperCall"], srcAddrList["LzSuperCall"]]
+    [destAddr, sourceAddr]
   );
 
   const isTrustedRemoteSet = await lzSuperCall.isTrustedRemote(
