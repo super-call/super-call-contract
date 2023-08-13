@@ -40,6 +40,7 @@ async function setTrustedRemotePair(
       );
       console.log(` tx: ${tx?.hash}`);
     } catch (e: any) {
+      console.error(e);
       if (
         e?.error?.message?.includes("The chainId + address is already trusted")
       ) {

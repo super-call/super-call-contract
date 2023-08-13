@@ -18,8 +18,9 @@ contract LzSuperCall is NonblockingLzApp {
         uint fee;
     }
 
-    constructor(address _lzEndpoint, uint16 _lzChainId) NonblockingLzApp(_lzEndpoint) {
+    constructor(address _lzEndpoint, uint16 _lzChainId, address _owner) NonblockingLzApp(_lzEndpoint) {
         lzChainId = _lzChainId;
+        transferOwnership(_owner);
     }
 
     function aggregate(bytes[] memory encodedCalls) external payable {
