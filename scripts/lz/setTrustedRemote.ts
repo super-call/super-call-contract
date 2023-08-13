@@ -1,27 +1,28 @@
 import { ethers, network } from "hardhat";
-import addressUtils from "../utils/addressUtils";
-import { LzSuperCall__factory } from "../typechain-types";
+import addressUtils from "../../utils/addressUtils";
+import { LzApp__factory } from "../../typechain-types";
 
-const chainIds = require("../constants/chainIds.json");
+const chainIds = require("../../constants/chainIds.json");
 
-async function main() {
+async function setTrustedRemotePair(
+  srcChain: string,
+  destChain: string,
+  contractName: string
+) {
   const [signer] = await ethers.getSigners();
-
-  const srcChain = "fuji";
-  const destChain = "bsc-testnet";
-
   const srcAddrList = await addressUtils.getAddressList(srcChain);
   const destAddrList = await addressUtils.getAddressList(destChain);
 
-  const lzSuperCall = LzSuperCall__factory.connect(
-    srcAddrList["LzSuperCall"],
-    signer
-  );
+  // Input 2
+  const sourceAddr = srcAddrList[contractName];
+  const destAddr = destAddrList[contractName];
+
+  const lzSuperCall = LzApp__factory.connect(sourceAddr, signer);
 
   const remoteChainId = chainIds[destChain];
   const remoteAndLocal = ethers.solidityPacked(
     ["address", "address"],
-    [destAddrList["LzSuperCall"], srcAddrList["LzSuperCall"]]
+    [destAddr, sourceAddr]
   );
 
   const isTrustedRemoteSet = await lzSuperCall.isTrustedRemote(
@@ -40,7 +41,7 @@ async function main() {
       console.log(` tx: ${tx?.hash}`);
     } catch (e: any) {
       if (
-        e.error.message.includes("The chainId + address is already trusted")
+        e?.error?.message?.includes("The chainId + address is already trusted")
       ) {
         console.log("*source already set*");
       } else {
@@ -51,6 +52,15 @@ async function main() {
     }
   } else {
     console.log("*source already set*");
+  }
+}
+
+async function main() {
+  const srcChain = "fantom-testnet";
+  const destChains = ["fuji", "bsc-testnet", "mumbai"];
+  const contractName = "LzSuperCall";
+  for (let destChain of destChains) {
+    await setTrustedRemotePair(srcChain, destChain, contractName);
   }
 }
 

@@ -27,3 +27,15 @@ npx hardhat run script/deployLogger.ts --network <network>
 ```bash
 npx hardhat run script/callLogger.ts --network <network>
 ```
+
+## Examples
+1. Deploy supercall
+npx hardhat run scripts/deployLzSuperCall.ts --network fuji 
+npx hardhat run scripts/deployLzSuperCall.ts --network fantom-testnet
+2. Set trusted remote
+npx hardhat run scripts/setTrustedRemote.ts --network fuji 
+npx hardhat run scripts/setTrustedRemote.ts --network fantom-testnet
+3. Call logger from on chain to another chain
+npx hardhat run scripts/callLogger.ts --network fuji 
+4. Check log value on the destination chain
+px hardhat run scripts/getLogValue.ts --network fantom-testnet
