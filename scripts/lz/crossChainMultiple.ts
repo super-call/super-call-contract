@@ -3,8 +3,8 @@ import addressUtils from "../../utils/addressUtils";
 import { Logger__factory, LzSuperCall__factory } from "../../typechain-types";
 import { LzCall } from "@super-call/sdk";
 
-const chainIds = require("../../constants/chainIds.json");
-const endpoints = require("../../constants/layerzeroEndpoints.json");
+const LZ_CHAIN_IDS = require("../../constants/chainIds.json");
+const LZ_ENDPOINTS = require("../../constants/layerzeroEndpoints.json");
 
 const getLogCallData = (message: string) => {
   const loggerInterface = new ethers.Interface(Logger__factory.abi);
@@ -27,13 +27,13 @@ async function main() {
 
   const endpoint = await ethers.getContractAt(
     "ILayerZeroEndpoint",
-    endpoints[network.name]
+    LZ_ENDPOINTS[network.name]
   );
 
   const promises = destChains.map(async (destChain) => {
     const destAddrList = await addressUtils.getAddressList(destChain);
 
-    const destChainId = chainIds[destChain];
+    const destChainId = LZ_CHAIN_IDS[destChain];
     const target = destAddrList["Logger"];
     const callData = getLogCallData(
       `Hello World Call from ${network.name}.`

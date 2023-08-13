@@ -40,6 +40,7 @@ async function setTrustedRemotePair(
       );
       console.log(` tx: ${tx?.hash}`);
     } catch (e: any) {
+      console.error(e);
       if (
         e?.error?.message?.includes("The chainId + address is already trusted")
       ) {
@@ -57,7 +58,7 @@ async function setTrustedRemotePair(
 
 async function main() {
   const srcChain = "fantom-testnet";
-  const destChains = ["fuji", "bsc-testnet", "mumbai"];
+  const destChains = ["fuji"];
   const contractName = "LzSuperCall";
   for (let destChain of destChains) {
     await setTrustedRemotePair(srcChain, destChain, contractName);
