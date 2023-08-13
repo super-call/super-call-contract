@@ -1,6 +1,6 @@
 import { ethers, network } from "hardhat";
-import addressUtils from "../../utils/addressUtils";
-import { Logger__factory } from "../../typechain-types";
+import addressUtils from "../utils/addressUtils";
+import { Logger__factory } from "../typechain-types";
 
 async function main() {
   const [signer] = await ethers.getSigners();

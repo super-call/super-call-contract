@@ -4,7 +4,11 @@ import { LzApp__factory } from "../../typechain-types";
 
 const chainIds = require("../../constants/chainIds.json");
 
-async function setTrustedRemotePair(srcChain: string, destChain: string, contractName: string) {
+async function setTrustedRemotePair(
+  srcChain: string,
+  destChain: string,
+  contractName: string
+) {
   const [signer] = await ethers.getSigners();
   const srcAddrList = await addressUtils.getAddressList(srcChain);
   const destAddrList = await addressUtils.getAddressList(destChain);
@@ -52,10 +56,12 @@ async function setTrustedRemotePair(srcChain: string, destChain: string, contrac
 }
 
 async function main() {
-  const chain1 = "fantom-testnet";
-  const chain2 = "fuji";
+  const srcChain = "fantom-testnet";
+  const destChains = ["fuji", "bsc-testnet", "mumbai"];
   const contractName = "LzSuperCall";
-  await setTrustedRemotePair(chain1, chain2, contractName);
+  for (let destChain of destChains) {
+    await setTrustedRemotePair(srcChain, destChain, contractName);
+  }
 }
 
 // We recommend this pattern to be able to use async/await everywhere
