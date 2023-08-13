@@ -7,6 +7,8 @@ import "./lzApp/NonblockingLzApp.sol";
 
 contract LzSuperCall is NonblockingLzApp {
 
+    uint16 public lzChainId;
+
     struct Call {
         uint16 chainId;
         address target;
@@ -16,7 +18,9 @@ contract LzSuperCall is NonblockingLzApp {
         uint fee;
     }
 
-    constructor(address _lzEndpoint) NonblockingLzApp(_lzEndpoint) {}
+    constructor(address _lzEndpoint, uint16 _lzChainId) NonblockingLzApp(_lzEndpoint) {
+        lzChainId = _lzChainId;
+    }
 
     function aggregate(bytes[] memory encodedCalls) external payable {
         _processCalls(encodedCalls);
@@ -32,7 +36,7 @@ contract LzSuperCall is NonblockingLzApp {
         for (uint256 i = 0; i < length; i++) {
             Call memory call = abi.decode(encodedCalls[i], (Call));
 
-            if (block.chainid == call.chainId) {
+            if (lzChainId == call.chainId) {
                 (bool success, ) = call.target.call(call.callData);
                 require(success, 'LzSuperCall: call failed');
                 _processCalls(call.subCalls);

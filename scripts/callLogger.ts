@@ -12,39 +12,34 @@ const getLogCallData = (message: string) => {
 };
 
 async function main() {
+  // Inputs
+  const destChain = "fantom-testnet"
+
+  // Main function
   const [signer] = await ethers.getSigners();
-  const addressList = await addressUtils.getAddressList(network.name);
+  
+  const srcAddrList = await addressUtils.getAddressList(network.name);
+  const destAddrList = await addressUtils.getAddressList(destChain);
+
   const lzSuperCall = LzSuperCall__factory.connect(
-    addressList["LzSuperCall"],
+    srcAddrList["LzSuperCall"],
     signer
   );
 
   const endpoint = await ethers.getContractAt("ILayerZeroEndpoint", endpoints[network.name])
 
-  const networkId = chainIds["bsc-testnet"];
-  const target = addressList["Logger"];
+  const destChainId = chainIds[destChain];
+  const target = destAddrList["Logger"];
   const callData = getLogCallData(`Hello World Call from ${network.name}`);
-  const lzSuperCallAddr = addressList["LzSuperCall"];
-  const fee = "0";
+  const lzSuperCallAddr = destAddrList["LzSuperCall"];
 
-  // let adapterParams = ethers.solidityPacked(["bytes"], [""]) // default adapterParams example
-  let adapterParams = ethers.solidityPacked(["uint16", "uint256"], [1, 200000]) // default adapterParams example
-
-  const call = new LzCall(networkId, target, callData, lzSuperCallAddr);
-  const fees = await endpoint.estimateFees(networkId, lzSuperCallAddr, "0x", false, adapterParams)
-
-  // call.fee = await lzSuperCall
-  //   .estimateFee(networkId, false, [call.encode()], adapterParams)
-  //   .then((res) => res.nativeFee.toString());
-  //   call.fee = await lzSuperCall.aggregate
-  //     .estimateGas([call.encode()])
-  //     .then((res) => (res * BigInt(4)).toString());
-
-  console.log(fees);
+  const adapterParams = ethers.solidityPacked(["uint16", "uint256"], [1, 200000]) // default adapterParams example
+  const call = new LzCall(destChainId, target, callData, lzSuperCallAddr);
+  const fees = await endpoint.estimateFees(destChainId, lzSuperCallAddr, "0x", false, adapterParams)
 
   const calls: string[] = [call.encode()];
 
-  const tx = await lzSuperCall.aggregate(calls, { value: fees[0] });
+  const tx = await lzSuperCall.aggregate(calls, { value: fees[0] * BigInt(10) });
   console.log(`Submitted tx ${tx.hash}`);
   const receipt = await tx.wait();
 
