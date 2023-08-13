@@ -1,6 +1,6 @@
 import { ethers, network } from "hardhat";
-import addressUtils from "../utils/addressUtils";
-import { Logger__factory, LzSuperCall__factory } from "../typechain-types";
+import addressUtils from "../../utils/addressUtils";
+import { Logger__factory, LzSuperCall__factory } from "../../typechain-types";
 import { LzCall } from "@super-call/sdk";
 
 const chainIds = require("../constants/chainIds.json");

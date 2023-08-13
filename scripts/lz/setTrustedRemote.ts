@@ -1,6 +1,6 @@
 import { ethers, network } from "hardhat";
-import addressUtils from "../utils/addressUtils";
-import { LzApp__factory } from "../typechain-types";
+import addressUtils from "../../utils/addressUtils";
+import { LzApp__factory } from "../../typechain-types";
 
 const chainIds = require("../constants/chainIds.json");
 

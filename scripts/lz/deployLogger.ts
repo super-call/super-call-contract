@@ -1,5 +1,5 @@
 import { ethers, network } from "hardhat";
-import addressUtils from "../utils/addressUtils";
+import addressUtils from "../../utils/addressUtils";
 
 async function main() {
   const logger = await ethers.deployContract("Logger", []);
