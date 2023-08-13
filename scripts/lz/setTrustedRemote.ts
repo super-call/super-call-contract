@@ -2,7 +2,7 @@ import { ethers, network } from "hardhat";
 import addressUtils from "../../utils/addressUtils";
 import { LzApp__factory } from "../../typechain-types";
 
-const chainIds = require("../constants/chainIds.json");
+const chainIds = require("../../constants/chainIds.json");
 
 async function setTrustedRemotePair(srcChain: string, destChain: string, contractName: string) {
   const [signer] = await ethers.getSigners();

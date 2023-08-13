@@ -1,8 +1,8 @@
 import { ethers, network } from "hardhat";
 import addressUtils from "../../utils/addressUtils";
 
-const LZ_CHAIN_IDS = require('../constants/chainIds.json')
-const LZ_ENDPOINTS = require("../constants/layerzeroEndpoints.json");
+const LZ_CHAIN_IDS = require('../../constants/chainIds.json')
+const LZ_ENDPOINTS = require("../../constants/layerzeroEndpoints.json");
 
 async function main() {
   const lzSuperCall = await ethers.deployContract("LzSuperCall", [

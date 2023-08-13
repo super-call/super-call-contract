@@ -2,7 +2,7 @@ import { ethers, network } from "hardhat";
 import addressUtils from "../../utils/addressUtils";
 import { LzSuperCall__factory } from "../../typechain-types";
 
-const chainIds = require("../constants/chainIds.json");
+const chainIds = require("../../constants/chainIds.json");
 
 async function main() {
   const [signer] = await ethers.getSigners();

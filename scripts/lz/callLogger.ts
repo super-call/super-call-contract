@@ -3,8 +3,8 @@ import addressUtils from "../../utils/addressUtils";
 import { Logger__factory, LzSuperCall__factory } from "../../typechain-types";
 import { LzCall } from "@super-call/sdk";
 
-const chainIds = require("../constants/chainIds.json");
-const endpoints = require("../constants/layerzeroEndpoints.json");
+const chainIds = require("../../constants/chainIds.json");
+const endpoints = require("../../constants/layerzeroEndpoints.json");
 
 const getLogCallData = (message: string) => {
   const loggerInterface = new ethers.Interface(Logger__factory.abi);
@@ -30,16 +30,17 @@ async function main() {
 
   const destChainId = chainIds[destChain];
   const target = destAddrList["Logger"];
-  const callData = getLogCallData(`Hello World Call from ${network.name}`);
+  const callData = getLogCallData(`Hello World Call from ${network.name}. This is test 2`);
   const lzSuperCallAddr = destAddrList["LzSuperCall"];
 
   const adapterParams = ethers.solidityPacked(["uint16", "uint256"], [1, 200000]) // default adapterParams example
   const call = new LzCall(destChainId, target, callData, lzSuperCallAddr);
-  const fees = await endpoint.estimateFees(destChainId, lzSuperCallAddr, "0x", false, adapterParams)
+  
+  const fees = await endpoint.estimateFees(destChainId, lzSuperCallAddr, call.encode(), false, adapterParams)
 
   const calls: string[] = [call.encode()];
 
-  const tx = await lzSuperCall.aggregate(calls, { value: fees[0] * BigInt(10) });
+  const tx = await lzSuperCall.aggregate(calls, { value: fees[0] });
   console.log(`Submitted tx ${tx.hash}`);
   const receipt = await tx.wait();
 
