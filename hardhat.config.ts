@@ -1,7 +1,7 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 // import "hardhat-contract-sizer";
-import accountUtils from './utils/accountUtils';
+import accountUtils from "./utils/accountUtils";
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -89,8 +89,8 @@ const config: HardhatUserConfig = {
       chainId: 5,
       accounts: accountUtils.getAccounts(),
     },
-    'bsc-testnet': {
-      url: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
+    "bsc-testnet": {
+      url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
       chainId: 97,
       accounts: accountUtils.getAccounts(),
     },
@@ -104,24 +104,27 @@ const config: HardhatUserConfig = {
       chainId: 80001,
       accounts: accountUtils.getAccounts(),
     },
-    'arbitrum-goerli': {
+    "arbitrum-goerli": {
       url: `https://goerli-rollup.arbitrum.io/rpc/`,
       chainId: 421613,
       accounts: accountUtils.getAccounts(),
     },
-    'optimism-goerli': {
+    "optimism-goerli": {
       url: `https://goerli.optimism.io/`,
       chainId: 420,
       accounts: accountUtils.getAccounts(),
     },
-    'fantom-testnet': {
+    "fantom-testnet": {
       url: `https://rpc.ankr.com/fantom_testnet`,
       chainId: 4002,
       accounts: accountUtils.getAccounts(),
-    }
-  }
-
-
+    },
+    "base-testnet": {
+      chainId: 84531,
+      url: `https://goerli.base.org`,
+      accounts: accountUtils.getAccounts(),
+    },
+  },
 };
 
 export default config;

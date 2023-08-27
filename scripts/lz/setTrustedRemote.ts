@@ -57,8 +57,8 @@ async function setTrustedRemotePair(
 }
 
 async function main() {
-  const srcChain = "bsc-testnet";
-  const destChains = ["fuji", "mumbai", "fantom-testnet"];
+  const srcChain = "base-testnet";
+  const destChains = ["fuji", "bsc-testnet", "mumbai"];
   const contractName = "LzSuperCall";
   for (let destChain of destChains) {
     await setTrustedRemotePair(srcChain, destChain, contractName);
