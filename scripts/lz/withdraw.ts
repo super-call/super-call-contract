@@ -1,29 +1,26 @@
 import { ethers, network } from "hardhat";
 import addressUtils from "../../utils/addressUtils";
-import { LzSuperCall__factory } from "../../typechain-types";
+import {
+  ILayerZeroEndpoint__factory,
+  LzSuperCall__factory,
+} from "../../typechain-types";
 
 const chainIds = require("../../constants/chainIds.json");
+const endpoints = require("../../constants/layerzeroEndpoints.json");
 
 async function main() {
   const [signer] = await ethers.getSigners();
   const addressList = await addressUtils.getAddressList(network.name);
-
-  const lzSuperCall = LzSuperCall__factory.connect(
+  const lzSupercall = LzSuperCall__factory.connect(
     addressList["LzSuperCall"],
     signer
   );
 
-  // Inputs
-  const destChains = ["fantom-testnet", "bsc-testnet", "mumbai"];
+  const tx = await lzSupercall.withdraw();
+  await tx.wait();
 
-  for (let destChain of destChains) {
-    const destChainId = chainIds[destChain];
-    const size = 1000000;
-    const tx = await lzSuperCall.setPayloadSizeLimit(destChainId, size);
-
-    const receipt = await tx.wait();
-    console.log("Tx mined: ", receipt?.hash);
-  }
+  const receipt = await tx.wait();
+  console.log("Tx mined: ", receipt?.hash);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

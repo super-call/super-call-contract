@@ -6,7 +6,6 @@ pragma abicoder v2;
 import "./lzApp/NonblockingLzApp.sol";
 
 contract LzSuperCall is NonblockingLzApp {
-
     uint16 public lzChainId;
 
     struct Call {
@@ -18,7 +17,11 @@ contract LzSuperCall is NonblockingLzApp {
         uint fee;
     }
 
-    constructor(address _lzEndpoint, uint16 _lzChainId, address _owner) NonblockingLzApp(_lzEndpoint) {
+    constructor(
+        address _lzEndpoint,
+        uint16 _lzChainId,
+        address _owner
+    ) NonblockingLzApp(_lzEndpoint) {
         lzChainId = _lzChainId;
         transferOwnership(_owner);
     }
@@ -39,15 +42,27 @@ contract LzSuperCall is NonblockingLzApp {
 
             if (lzChainId == call.chainId) {
                 (bool success, ) = call.target.call(call.callData);
-                require(success, 'LzSuperCall: call failed');
+                require(success, "LzSuperCall: call failed");
                 _processCalls(call.subCalls);
             } else {
-                _lzSend(call.chainId, encodedCalls[i], payable(msg.sender), address(0x0), bytes(""), msg.value);
+                _lzSend(
+                    call.chainId,
+                    encodedCalls[i],
+                    payable(msg.sender),
+                    address(0x0),
+                    bytes(""),
+                    msg.value
+                );
             }
         }
     }
 
-    function _nonblockingLzReceive(uint16 _srcChainId, bytes memory _srcAddress, uint64 _nonce, bytes memory _payload) internal override {
+    function _nonblockingLzReceive(
+        uint16 _srcChainId,
+        bytes memory _srcAddress,
+        uint64 _nonce,
+        bytes memory _payload
+    ) internal override {
         bytes[] memory encodedCalls = new bytes[](1);
         encodedCalls[0] = _payload;
 
@@ -55,12 +70,28 @@ contract LzSuperCall is NonblockingLzApp {
     }
 
     // Helper functions
-    function estimateFee(uint16 _dstChainId, bool _useZro, bytes[] calldata _payloads, bytes calldata _adapterParams) public view returns (uint nativeFee, uint zroFee) {
+    function estimateFee(
+        uint16 _dstChainId,
+        bool _useZro,
+        bytes[] calldata _payloads,
+        bytes calldata _adapterParams
+    ) public view returns (uint nativeFee, uint zroFee) {
         for (uint i = 0; i < _payloads.length; i++) {
-            (uint native, uint zro) = lzEndpoint.estimateFees(_dstChainId, address(this), _payloads[i], _useZro, _adapterParams);
+            (uint native, uint zro) = lzEndpoint.estimateFees(
+                _dstChainId,
+                address(this),
+                _payloads[i],
+                _useZro,
+                _adapterParams
+            );
             nativeFee += native;
             zroFee += zro;
         }
     }
 
+    function withdraw() external onlyOwner {
+        payable(msg.sender).transfer(address(this).balance);
+    }
+
+    receive() external payable {}
 }
