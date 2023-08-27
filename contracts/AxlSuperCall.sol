@@ -16,7 +16,7 @@ contract AxlSuperCall is AxelarExecutable {
         address target;
         bytes callData;
         bytes[] subCalls;
-        address axecutor;
+        address axlSuperCall;
         uint fee;
     }
 
@@ -25,7 +25,7 @@ contract AxlSuperCall is AxelarExecutable {
         chain = chain_;
     }
 
-    function aggregate(bytes[] memory encodedCalls) external payable {
+    function aggregate(bytes[] memory encodedCalls) external payable virtual {
         _processCallsWithGasService(encodedCalls);
     }
 
@@ -33,7 +33,7 @@ contract AxlSuperCall is AxelarExecutable {
         _processCallsWithoutGasService(encodedCalls);
     }
 
-    function _processCallsWithGasService(bytes[] memory encodedCalls) private {
+    function _processCallsWithGasService(bytes[] memory encodedCalls) internal {
         uint256 length = encodedCalls.length;
 
         for (uint256 i = 0; i < length; i++) {
@@ -47,16 +47,16 @@ contract AxlSuperCall is AxelarExecutable {
                 gasService.payNativeGasForContractCall{ value: call.fee }(
                     address(this),
                     call.chain,
-                    call.axecutor.toString(),
+                    call.axlSuperCall.toString(),
                     encodedCalls[i],
                     msg.sender
                 );
-                gateway.callContract(call.chain, call.axecutor.toString(), encodedCalls[i]);
+                gateway.callContract(call.chain, call.axlSuperCall.toString(), encodedCalls[i]);
             }
         }
     }
 
-    function _processCallsWithoutGasService(bytes[] memory encodedCalls) private {
+    function _processCallsWithoutGasService(bytes[] memory encodedCalls) internal {
         uint256 length = encodedCalls.length;
 
         for (uint256 i = 0; i < length; i++) {
@@ -64,15 +64,15 @@ contract AxlSuperCall is AxelarExecutable {
 
             if (keccak256(bytes(call.chain)) == keccak256(bytes(chain))) {
                 (bool success, ) = call.target.call(call.callData);
-                require(success, 'AxecutorBase: call failed');
+                require(success, 'AxlSuperCall: call failed');
                 _processCallsWithoutGasService(call.subCalls);
             } else {
-                gateway.callContract(call.chain, call.axecutor.toString(), encodedCalls[i]);
+                gateway.callContract(call.chain, call.axlSuperCall.toString(), encodedCalls[i]);
             }
         }
     }
 
-    function _execute(string calldata sourceChain_, string calldata sourceAddress_, bytes calldata payload_) internal override {
+    function _execute(string calldata sourceChain_, string calldata sourceAddress_, bytes calldata payload_) internal override virtual {
         bytes[] memory encodedCalls = new bytes[](1);
         encodedCalls[0] = payload_;
 
