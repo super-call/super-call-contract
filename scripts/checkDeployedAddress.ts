@@ -1,21 +1,18 @@
-import { ethers, network } from "hardhat";
+import { network } from "hardhat";
 import addressUtils from "../utils/addressUtils";
-import { Create3Deployer__factory } from "../typechain-types";
+import { deployedAddress } from "../utils/deployerUtilts";
 
 async function main() {
-  const [signer] = await ethers.getSigners();
   const addressList = await addressUtils.getAddressList(network.name);
-  const deployer = Create3Deployer__factory.connect(
-    addressList["Create3Deployer"],
-    signer
-  );
 
-  const deployerAddr = addressList["LzSuperCall"]
-  const salt = "";
+  const deployerAddr = addressList["Create3Deployer"];
+  const superCallAddr = addressList["AxlSuperCall"];
+  const salt =
+    "0x818f8312328732c9fc080bed69c2c2327c257bfac7723549916467f81ddb831d";
 
-  const address = await deployer.deployedAddress(deployerAddr, salt);
+  const address = await deployedAddress(deployerAddr, superCallAddr, salt);
 
-  console.log(address);
+  console.log({ address });
 }
 
 // We recommend this pattern to be able to use async/await everywhere
