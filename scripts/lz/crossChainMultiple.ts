@@ -3,8 +3,8 @@ import addressUtils from "../../utils/addressUtils";
 import { Logger__factory, LzSuperCall__factory } from "../../typechain-types";
 import { LzCall } from "@super-call/sdk";
 
-const LZ_CHAIN_IDS = require("../../constants/chainIds.json");
-const LZ_ENDPOINTS = require("../../constants/layerzeroEndpoints.json");
+const chainIds = require("../../constants/chainIds.json");
+const endpoints = require("../../constants/layerzeroEndpoints.json");
 
 const getLogCallData = (message: string) => {
   const loggerInterface = new ethers.Interface(Logger__factory.abi);
@@ -13,7 +13,7 @@ const getLogCallData = (message: string) => {
 
 async function main() {
   // Dest chains
-  const destChains = ["mumbai", "bsc-testnet", "fantom-testnet"];
+  const destChains = ["fantom-testnet", "bsc-testnet", "mumbai"];
 
   // Main function
   const [signer] = await ethers.getSigners();
@@ -27,16 +27,16 @@ async function main() {
 
   const endpoint = await ethers.getContractAt(
     "ILayerZeroEndpoint",
-    LZ_ENDPOINTS[network.name]
+    endpoints[network.name]
   );
 
   const promises = destChains.map(async (destChain) => {
     const destAddrList = await addressUtils.getAddressList(destChain);
 
-    const destChainId = LZ_CHAIN_IDS[destChain];
+    const destChainId = chainIds[destChain];
     const target = destAddrList["Logger"];
     const callData = getLogCallData(
-      `Hello World Call from ${network.name}.`
+      `ETHGlobal greet from ${network.name}.`
     );
     const lzSuperCallAddr = destAddrList["LzSuperCall"];
 
@@ -53,12 +53,16 @@ async function main() {
       adapterParams
     );
 
-    return { call, fee: fees[0] };
+    call.fee = fees[0].toString();
+
+    return call;
   });
 
-  const list = await Promise.all(promises);
-  const encodedCalls = list.map((item) => item.call.encode());
-  const totalFee = list.reduce((prev, item) => prev + item.fee, BigInt(0));
+  const calls = await Promise.all(promises);
+  const encodedCalls = calls.map((call) => call.encode());
+  const totalFee = calls.reduce((prev, call) => prev + BigInt(call.fee), BigInt(0));
+
+  console.log(`Total fee: ${totalFee}`)
 
   const tx = await lzSuperCall.aggregate(encodedCalls, { value: totalFee });
   console.log(`Submitted tx ${tx.hash}`);

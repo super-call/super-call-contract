@@ -1,0 +1,122 @@
+[
+    {
+        "name": "ethereum-2",
+        "chainId": 5,
+        "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+        "gasService": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
+        "tokenSymbol": "ETH",
+        "label": "goerli"
+    },
+    {
+        "name": "binance",
+        "chainId": 97,
+        "gateway": "0x4D147dCb984e6affEEC47e44293DA442580A3Ec0",
+        "gasService": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
+        "tokenSymbol": "BNB",
+        "label": "bsc-testnet"
+    },
+    {
+        "name": "Polygon",
+        "chainId": 80001,
+        "gateway": "0xBF62ef1486468a6bd26Dd669C06db43dEd5B849B",
+        "gasService": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
+        "tokenSymbol": "MATIC",
+        "label": "mumbai"
+    },
+    {
+        "name": "Avalanche",
+        "chainId": 43113,
+        "gateway": "0xC249632c2D40b9001FE907806902f63038B737Ab",
+        "gasService": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
+        "tokenSymbol": "AVAX",
+        "label": "fuji"
+    },
+    {
+        "name": "Fantom",
+        "chainId": 4002,
+        "gateway": "0x97837985Ec0494E7b9C71f5D3f9250188477ae14",
+        "gasService": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
+        "tokenSymbol": "FTM",
+        "label": "fantom-testnet"
+    },
+    {
+        "name": "Moonbeam",
+        "chainId": 1287,
+        "gateway": "0x5769D84DD62a6fD969856c75c7D321b84d455929",
+        "gasService": "0x5769D84DD62a6fD969856c75c7D321b84d455929",
+        "tokenSymbol": "DEV",
+        "label": "moonbeam-testnet"
+    },
+    {
+        "name": "celo",
+        "chainId": 44787,
+        "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+        "gasService": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
+        "tokenSymbol": "CELO",
+        "label": "celo-testnet"
+    },
+    {
+        "name": "arbitrum",
+        "chainId": 421613,
+        "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+        "gasService": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
+        "tokenSymbol": "ETH",
+        "label": "arbitrum-goerli"
+    },
+    {
+        "name": "optimism",
+        "chainId": 420,
+        "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+        "gasService": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
+        "tokenSymbol": "OP",
+        "label": "optimism-goerli"
+    },
+    {
+        "name": "base",
+        "chainId": 84531,
+        "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+        "gasService": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
+        "tokenSymbol": "ETH",
+        "label": "base-testnet"
+    },
+    {
+        "name": "linea",
+        "chainId": 59140,
+        "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+        "gasService": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
+        "tokenSymbol": "ETH",
+        "label": "linea-goerli"
+    },
+    {
+        "name": "mantle",
+        "chainId": 5001,
+        "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+        "gasService": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
+        "tokenSymbol": "MANTLE",
+        "label": "mantle-testnet"
+    },
+    {
+        "name": "polygon-zkevm",
+        "chainId": 1442,
+        "gateway": "0x999117D44220F33e0441fbAb2A5aDB8FF485c54D",
+        "gasService": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
+        "tokenSymbol": "ETH",
+        "label": "polygon-zkevm-testnet"
+    },
+    {
+        "name": "filecoin-2",
+        "chainId": 314159,
+        "gateway": "0x999117D44220F33e0441fbAb2A5aDB8FF485c54D",
+        "gasService": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
+        "tokenSymbol": "FIL",
+        "label": "filecoin-testnet"
+    },
+    {
+        "name": "kava",
+        "chainId": 2221,
+        "gateway": "0xC8D18F85cB0Cee5C95eC29c69DeaF6cea972349c",
+        "gasService": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
+        "tokenSymbol": "KAVA",
+        "label": "kava-testnet"
+    }
+]

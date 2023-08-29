@@ -9,7 +9,7 @@ async function main() {
 
   const message = await logger.message();
 
-  console.log(`Log message in chain ${network.name} is ${message}`);
+  console.log(`\nLog message in "${network.name}": "${message}"\n`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
