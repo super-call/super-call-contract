@@ -42,6 +42,7 @@ async function main() {
   const bytecode = await factory
     .getDeployTransaction(gateway, gasReceiver, chain)
     .then((tx) => tx.data);
+    
   const key = Math.random().toString(36).substring(7);
   const salt = getDeploymentSalt(key);
 
