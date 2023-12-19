@@ -124,6 +124,18 @@ const config: HardhatUserConfig = {
       url: `https://goerli.base.org`,
       accounts: accountUtils.getAccounts(),
     },
+    bitkubChain: {
+      chainId: 96,
+      url: "https://rpc.bitkubchain.io",
+      accounts:
+        accountUtils.getAccounts(),
+    },
+    bitkubChainTestnet: {
+      chainId: 25925,
+      url: "https://rpc-testnet.bitkubchain.io",
+      accounts:
+        accountUtils.getAccounts(),
+    },
   },
 };
 
